@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">JuegoCarreraNaipes</string>
+
+    <string name="msg_movimiento">Movimiento: </string>
+    <string name="msg_avance">, Avanzó: </string>
+
+    <string name="msg_ganador">EL GANADOR SON LAS CARTAS: </string>
+
+    <string name="msg_btn_siguiente">siguiente</string>
+    <string name="msg_btn_juego_nuevo">Juego nuevo</string>
+    <string name="msg_btn_instrucciones">Como se juega</string>
+
+    <string name="instrucciones">
+        EL JUEGO CONSISTE EN SACAR CARTAS E IRA AVANZANDO EL TIPO DE LA CARTA QUE SALE,
+        EL PRIMERO QUE LLEGUE AL FINAL DE LA PISTA GANARA LA PARTIDA. \n\n
+
+        PUEDES JUGARLO CON TUS AMIGOS Y/O FAMILIA, SELECCIONANDO UN TIPO Y VER QUIEN GANA. \n\n
+
+        SUERTE Y QUE SE DIVIERTAN :)
+    </string>
+</resources>
