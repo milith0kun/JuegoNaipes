@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Fondo circular con gradiente elegante -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#D4AF37"
+        android:strokeWidth="3"
+        android:pathData="M60,8 C30.2,8 6,32.2 6,62 C6,91.8 30.2,116 60,116 C89.8,116 114,91.8 114,62 C114,32.2 89.8,8 60,8 Z" />
+    
+    <!-- Anillo interior dorado -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFD700"
+        android:strokeWidth="2"
+        android:pathData="M60,12 C32.4,12 10,34.4 10,62 C10,89.6 32.4,112 60,112 C87.6,112 110,89.6 110,62 C110,34.4 87.6,12 60,12 Z" />
+    
+    <!-- Sombra interior sutil -->
+    <path
+        android:fillColor="#F8F8F8"
+        android:pathData="M60,16 C36.8,16 18,34.8 18,58 C18,81.2 36.8,100 60,100 C83.2,100 102,81.2 102,58 C102,34.8 83.2,16 60,16 Z" />
+
+    <!-- Carta principal (As de Corazones estilizado) -->
+    <group android:translateX="60" android:translateY="62">
+        
+        <!-- Rectángulo de carta con sombra -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:strokeColor="#2C2C2C"
+            android:strokeWidth="2"
+            android:pathData="M-20,-28 L20,-28 Q22,-28 22,-26 L22,26 Q22,28 20,28 L-20,28 Q-22,28 -22,26 L-22,-26 Q-22,-28 -20,-28 Z" />
+        
+        <!-- Sombra de carta -->
+        <path
+            android:fillColor="#E8E8E8"
+            android:pathData="M-19,-27 L19,-27 Q21,-27 21,-25 L21,25 Q21,27 19,27 L-19,27 Q-21,27 -21,25 L-21,-25 Q-21,-27 -19,-27 Z" />
+        
+        <!-- Símbolo de corazón central mejorado -->
+        <path
+            android:fillColor="#DC143C"
+            android:strokeColor="#B71C1C"
+            android:strokeWidth="0.5"
+            android:pathData="M0,-6 C-4,-11 -10,-11 -10,-5 C-10,-1 0,8 0,8 C0,8 10,-1 10,-5 C10,-11 4,-11 0,-6 Z" />
+        
+        <!-- "A" estilizada mejorada -->
+        <path
+            android:fillColor="#DC143C"
+            android:strokeColor="#B71C1C"
+            android:strokeWidth="0.3"
+            android:pathData="M-14,-22 L-10,-22 L-8,-17 L-12,-17 Z M-8,-17 L-4,-17 L-2,-12 L-6,-12 Z M-2,-12 L2,-12 L4,-17 L0,-17 Z M4,-17 L8,-17 L10,-22 L6,-22 Z M-6,-12 L2,-12 L2,-10 L-6,-10 Z" />
+        
+        <!-- Corazón pequeño superior izquierdo -->
+        <path
+            android:fillColor="#DC143C"
+            android:pathData="M-14,-20 C-15,-21 -17,-21 -17,-19 C-17,-18 -14,-16 -14,-16 C-14,-16 -11,-18 -11,-19 C-11,-21 -13,-21 -14,-20 Z" />
+        
+        <!-- Corazón pequeño inferior derecho (rotado) -->
+        <path
+            android:fillColor="#DC143C"
+            android:pathData="M14,20 C15,21 17,21 17,19 C17,18 14,16 14,16 C14,16 11,18 11,19 C11,21 13,21 14,20 Z" />
+    </group>
+
+    <!-- Elementos decorativos mejorados (pequeños símbolos de palos) -->
+    <group android:translateX="25" android:translateY="25">
+        <!-- Trébol pequeño con sombra -->
+        <path
+            android:fillColor="#2C2C2C"
+            android:strokeColor="#1A1A1A"
+            android:strokeWidth="0.5"
+            android:pathData="M0,-4 C-1.5,-5.5 -4,-5.5 -4,-3 C-4,-1.5 -1.5,0 -1.5,0 C-1.5,0 -4,1.5 -4,3 C-4,5.5 -1.5,5.5 0,4 C1.5,5.5 4,5.5 4,3 C4,1.5 1.5,0 1.5,0 C1.5,0 4,-1.5 4,-3 C4,-5.5 1.5,-5.5 0,-4 Z M0,4 L0,6.5" />
+    </group>
+    
+    <group android:translateX="95" android:translateY="95">
+        <!-- Pica pequeña con sombra -->
+        <path
+            android:fillColor="#2C2C2C"
+            android:strokeColor="#1A1A1A"
+            android:strokeWidth="0.5"
+            android:pathData="M0,-4 C-2.5,-1.5 -2.5,1.5 0,4 C2.5,1.5 2.5,-1.5 0,-4 Z M0,4 L0,6.5 M-1.5,5.5 L1.5,5.5" />
+    </group>
+    
+    <group android:translateX="95" android:translateY="25">
+        <!-- Diamante pequeño con sombra -->
+        <path
+            android:fillColor="#DC143C"
+            android:strokeColor="#B71C1C"
+            android:strokeWidth="0.5"
+            android:pathData="M0,-4 L3,0 L0,4 L-3,0 Z" />
+    </group>
+    
+    <group android:translateX="25" android:translateY="95">
+        <!-- Corazón pequeño adicional -->
+        <path
+            android:fillColor="#DC143C"
+            android:strokeColor="#B71C1C"
+            android:strokeWidth="0.5"
+            android:pathData="M0,-2 C-2,-4 -4,-4 -4,-2 C-4,-1 0,3 0,3 C0,3 4,-1 4,-2 C4,-4 2,-4 0,-2 Z" />
+    </group>
+
+</vector>

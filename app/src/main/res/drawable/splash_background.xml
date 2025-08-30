@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    
+    <!-- Degradado elegante de verde oscuro a negro -->
+    <gradient
+        android:angle="135"
+        android:startColor="@color/verde_mesa_oscuro"
+        android:centerColor="#0A2E0C"
+        android:endColor="@color/black"
+        android:type="linear" />
+        
+</shape>

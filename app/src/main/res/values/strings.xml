@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">JuegoCarreraNaipes</string>
 
+    <!-- Textos de la pantalla de inicio -->
+    <string name="game_title">Carrera de Naipes</string>
+    <string name="game_subtitle">Juega con tus amigos</string>
+    <string name="start_game_button">Iniciar Juego</string>
+    <string name="app_icon_description">Icono del juego Carrera de Naipes</string>
+    <string name="decorative_card">Carta decorativa</string>
+
     <string name="msg_movimiento">Movimiento: </string>
     <string name="msg_avance">, Avanzó: </string>
 
@@ -22,4 +29,20 @@
 
         SUERTE Y QUE SE DIVIERTAN :)
     </string>
+
+    <!-- Descripciones de accesibilidad -->
+    <string name="btn_siguiente_description">Agregar siguiente carta al juego</string>
+    <string name="btn_nuevo_juego_description">Iniciar un nuevo juego</string>
+    <string name="btn_juego_nuevo_description">Iniciar un nuevo juego</string>
+    <string name="btn_info_description">Mostrar información e instrucciones del juego</string>
+    <string name="treboles_description">Cartas del palo de tréboles</string>
+    <string name="corazones_description">Cartas del palo de corazones</string>
+    <string name="picas_description">Cartas del palo de picas</string>
+    <string name="diamantes_description">Cartas del palo de diamantes</string>
+    <string name="pista_description">Pista de cartas del juego</string>
+    <string name="contador_movimientos_description">Contador de movimientos realizados</string>
+    
+    <!-- Strings para estados de la aplicación -->
+    <string name="procesando_carta">Procesando...</string>
+    <string name="movimientos_formato">Movimientos: %1$d</string>
 </resources>

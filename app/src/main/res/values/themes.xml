@@ -49,5 +49,10 @@
         <!-- Window flags for immersive experience -->
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
+        
+        <!-- Splash Screen API (Android 12+) -->
+        <item name="android:windowSplashScreenBackground">@color/verde_mesa</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="android:windowSplashScreenAnimationDuration">1000</item>
     </style>
 </resources>

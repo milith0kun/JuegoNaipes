@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_carta"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="@dimen/carta_corner_radius"
-    app:cardElevation="@dimen/carta_elevation"
-    app:strokeWidth="0dp">
+    android:background="@drawable/card_background"
+    android:padding="2dp">
 
     <ImageView
         android:id="@+id/ivCarta"
@@ -16,4 +15,4 @@
         android:scaleType="centerCrop"
         android:src="@drawable/red_back" />
 
-</com.google.android.material.card.MaterialCardView>
+</FrameLayout>

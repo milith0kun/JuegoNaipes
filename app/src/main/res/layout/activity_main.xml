@@ -5,7 +5,7 @@
     android:id="@+id/main_constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/verde_mesa"
+    android:background="@drawable/game_background"
     tools:context=".MainActivity">
 
     <!-- Header con información del juego -->
@@ -36,15 +36,39 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/red_back" />
 
-            <TextView
-                android:id="@+id/tvMovimientos"
-                android:layout_width="wrap_content"
-                android:layout_height="18dp"
-                android:gravity="center"
-                android:text="@string/text_movimientos_inicial"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp">
+
+                <TextView
+                    android:id="@+id/tvMovimientos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/text_movimientos_inicial"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:contentDescription="@string/contador_movimientos_description" />
+
+                <TextView
+                    android:id="@+id/tvCartaActual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:gravity="start"
+                    android:text="Esperando carta..."
+                    android:textColor="@color/rojo_cartas"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:contentDescription="Información de la carta actual" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -82,7 +106,8 @@
                 android:fadeScrollbars="true"
                 android:orientation="horizontal"
                 android:padding="@dimen/recyclerview_padding"
-                android:scrollbars="horizontal" />
+                android:scrollbars="horizontal"
+                android:contentDescription="@string/treboles_description" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -105,7 +130,8 @@
                 android:fadeScrollbars="true"
                 android:orientation="horizontal"
                 android:padding="@dimen/recyclerview_padding"
-                android:scrollbars="horizontal" />
+                android:scrollbars="horizontal"
+                android:contentDescription="@string/corazones_description" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -128,7 +154,8 @@
                 android:fadeScrollbars="true"
                 android:orientation="horizontal"
                 android:padding="@dimen/recyclerview_padding"
-                android:scrollbars="horizontal" />
+                android:scrollbars="horizontal"
+                android:contentDescription="@string/diamantes_description" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -151,7 +178,8 @@
                 android:fadeScrollbars="true"
                 android:orientation="horizontal"
                 android:padding="@dimen/recyclerview_padding"
-                android:scrollbars="horizontal" />
+                android:scrollbars="horizontal"
+                android:contentDescription="@string/picas_description" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -174,7 +202,8 @@
                 android:fadeScrollbars="true"
                 android:orientation="horizontal"
                 android:padding="@dimen/recyclerview_padding"
-                android:scrollbars="horizontal" />
+                android:scrollbars="horizontal"
+                android:contentDescription="@string/pista_description" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -204,34 +233,44 @@
                 android:layout_height="@dimen/button_height"
                 android:layout_marginEnd="@dimen/button_margin"
                 android:layout_weight="0.8"
-                android:backgroundTint="@color/verde_mesa"
+                android:background="@drawable/button_elegant"
                 android:text="@string/msg_btn_siguiente"
                 android:textColor="@color/white"
-                app:icon="@android:drawable/ic_media_play" />
+                android:textStyle="bold"
+                android:elevation="4dp"
+                android:contentDescription="@string/btn_siguiente_description"
+                app:icon="@android:drawable/ic_media_play"
+                app:iconTint="@color/white" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnJuegoNuevo"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginHorizontal="@dimen/button_margin"
                 android:layout_weight="0.8"
+                android:background="@drawable/button_elegant"
                 android:text="@string/msg_btn_juego_nuevo"
-                android:textColor="@color/verde_mesa"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:elevation="4dp"
+                android:contentDescription="@string/btn_juego_nuevo_description"
                 app:icon="@android:drawable/ic_menu_revert"
-                app:strokeColor="@color/verde_mesa" />
+                app:iconTint="@color/white" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnInfo"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginStart="@dimen/button_margin"
                 android:layout_weight="0.8"
+                android:background="@drawable/button_elegant"
                 android:text="@string/msg_btn_instrucciones"
-                android:textColor="@color/azul_cartas_accesible"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:elevation="4dp"
+                android:contentDescription="@string/btn_info_description"
                 app:icon="@android:drawable/ic_menu_info_details"
-                app:strokeColor="@color/azul_cartas_accesible" />
+                app:iconTint="@color/white" />
 
         </LinearLayout>
 
