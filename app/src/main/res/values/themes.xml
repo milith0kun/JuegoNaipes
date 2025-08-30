@@ -20,14 +20,14 @@
         <item name="colorOnTertiaryContainer">#0D47A1</item>
         
         <!-- Surface colors -->
-        <item name="colorSurface">#FAFAFA</item>
-        <item name="colorOnSurface">#212121</item>
-        <item name="colorSurfaceVariant">#F5F5F5</item>
-        <item name="colorOnSurfaceVariant">#424242</item>
+        <item name="colorSurface">@color/verde_mesa</item>
+        <item name="colorOnSurface">#FFFFFF</item>
+        <item name="colorSurfaceVariant">@color/verde_mesa_claro</item>
+        <item name="colorOnSurfaceVariant">#FFFFFF</item>
         
         <!-- Background colors -->
-        <item name="android:colorBackground">#FFFFFF</item>
-        <item name="colorOnBackground">#212121</item>
+        <item name="android:colorBackground">@color/verde_mesa</item>
+        <item name="colorOnBackground">#FFFFFF</item>
         
         <!-- Error colors -->
         <item name="colorError">#D32F2F</item>
@@ -50,9 +50,6 @@
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
         
-        <!-- Splash Screen API (Android 12+) -->
-        <item name="android:windowSplashScreenBackground">@color/verde_mesa</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
-        <item name="android:windowSplashScreenAnimationDuration">1000</item>
+        <!-- Splash Screen configurado en values-v31/themes.xml para Android 12+ -->
     </style>
 </resources>

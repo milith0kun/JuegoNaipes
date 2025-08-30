@@ -11,6 +11,9 @@ import android.animation.ObjectAnimator
 import android.animation.AnimatorSet
 import android.view.animation.OvershootInterpolator
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.example.juegocarreranaipes.databinding.ActivityMainBinding
 import com.example.juegocarreranaipes.model.Carta
 import com.example.juegocarreranaipes.model.GeneradorBaraja
@@ -22,12 +25,12 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val CARTAS_POR_PALO = 13
         private const val ESPACIADO_CARTAS = 8 // Espaciado entre cartas en dp
-        // Constantes para animaciones
-        private const val DURACION_ANIMACION_CARTA = 300L
-        private const val DURACION_ANIMACION_TEXTO = 200L
-        private const val DURACION_ANIMACION_REINICIO_FADE = 200L
-        private const val DURACION_ANIMACION_FADE_IN = 300L
-        private const val DURACION_ANIMACION_CELEBRACION = 600L
+        // Constantes para animaciones optimizadas
+        private const val DURACION_ANIMACION_CARTA = 150L // Reducido para mejor rendimiento
+        private const val DURACION_ANIMACION_TEXTO = 100L // Reducido para mejor rendimiento
+        private const val DURACION_ANIMACION_REINICIO_FADE = 100L // Reducido para mejor rendimiento
+        private const val DURACION_ANIMACION_FADE_IN = 150L // Reducido para mejor rendimiento
+        private const val DURACION_ANIMACION_CELEBRACION = 300L // Reducido para mejor rendimiento
     }
 
     // ViewBinding para acceso eficiente a las vistas
@@ -56,16 +59,27 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapterDiamantes: CartasAdapter
     private lateinit var adapterPista: CartasPistaAdapter
     
-    // Vibrador para feedback háptico
-    private lateinit var vibrator: Vibrator
+    // Vibrador para feedback háptico (puede ser null si no está disponible)
+    private var vibrator: Vibrator? = null
+    
+    // Gestor de audio para sonidos y música
+    private lateinit var audioManager: AudioManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
-        // Inicializar vibrador para feedback háptico
-        vibrator = ContextCompat.getSystemService(this, Vibrator::class.java)!!
+        // Configurar pantalla completa inmersiva para evitar elementos del sistema
+        configurarPantallaCompleta()
+        
+        // Inicializar vibrador para feedback háptico (manejo seguro de null)
+        vibrator = ContextCompat.getSystemService(this, Vibrator::class.java)
+        
+        // Inicializar gestor de audio
+        audioManager = AudioManager(this)
+        lifecycle.addObserver(audioManager)
 
         iniciarJuego()
         configurarEventos()
@@ -108,16 +122,18 @@ class MainActivity : AppCompatActivity() {
             return
         }
         
-        // Activar estado de carga
+        // Reproducir sonido de movimiento de carta
+        audioManager.playCardMove()
+        
+        // Activar estado de procesamiento
         procesandoCarta = true
         binding.btnSiguiente.isEnabled = false
         binding.btnSiguiente.text = getString(R.string.procesando_carta)
         
-        // Simular un pequeño delay para mostrar el estado de carga
-        binding.btnSiguiente.postDelayed({
-            // Tomar la siguiente carta de la pista
-            val cartaSeleccionada = pista[indicePistaActual]
-            indicePistaActual++
+        // Procesar carta inmediatamente sin delay artificial
+        // Tomar la siguiente carta de la pista
+        val cartaSeleccionada = pista[indicePistaActual]
+        indicePistaActual++
             
             // En un juego de carrera, cada carta avanza su palo correspondiente
             // Mostrar qué palo avanzó en el header con símbolo
@@ -142,7 +158,7 @@ class MainActivity : AppCompatActivity() {
                     treboles.forEachIndexed { index, carta ->
                         carta.revelada = (index == treboles.size - 1)
                     }
-                    adapterTreboles.actualizarCartas(treboles.toList())
+                    adapterTreboles.actualizarCartas(treboles) // Evitar copia innecesaria
                     animarCarta(binding.rvTreboles)
                 }
                 Palo.CORAZONES -> {
@@ -152,7 +168,7 @@ class MainActivity : AppCompatActivity() {
                     corazones.forEachIndexed { index, carta ->
                         carta.revelada = (index == corazones.size - 1)
                     }
-                    adapterCorazones.actualizarCartas(corazones.toList())
+                    adapterCorazones.actualizarCartas(corazones) // Evitar copia innecesaria
                     animarCarta(binding.rvCorazones)
                 }
                 Palo.PICAS -> {
@@ -162,7 +178,7 @@ class MainActivity : AppCompatActivity() {
                     picas.forEachIndexed { index, carta ->
                         carta.revelada = (index == picas.size - 1)
                     }
-                    adapterPicas.actualizarCartas(picas.toList())
+                    adapterPicas.actualizarCartas(picas) // Evitar copia innecesaria
                     animarCarta(binding.rvPicas)
                 }
                 Palo.DIAMANTES -> {
@@ -172,7 +188,7 @@ class MainActivity : AppCompatActivity() {
                     diamantes.forEachIndexed { index, carta ->
                         carta.revelada = (index == diamantes.size - 1)
                     }
-                    adapterDiamantes.actualizarCartas(diamantes.toList())
+                    adapterDiamantes.actualizarCartas(diamantes) // Evitar copia innecesaria
                     animarCarta(binding.rvDiamantes)
                 }
             }
@@ -184,15 +200,14 @@ class MainActivity : AppCompatActivity() {
             // Actualizar el estado del juego
             actualizarEstadoJuego()
             
-            // Restaurar estado del botón
-            procesandoCarta = false
-            binding.btnSiguiente.isEnabled = !juegoTerminado
-            binding.btnSiguiente.text = if (!juegoTerminado) {
-                getString(R.string.msg_btn_siguiente)
-            } else {
-                "Juego Terminado"
-            }
-        }, 150) // Delay de 150ms para mostrar feedback visual
+        // Restaurar estado del botón inmediatamente
+        procesandoCarta = false
+        binding.btnSiguiente.isEnabled = !juegoTerminado
+        binding.btnSiguiente.text = if (!juegoTerminado) {
+            getString(R.string.msg_btn_siguiente)
+        } else {
+            "Juego Terminado"
+        }
     }
 
     /**
@@ -281,6 +296,12 @@ class MainActivity : AppCompatActivity() {
      * Inicializa el juego con estado limpio y configuración optimizada
      */
     private fun iniciarJuego() {
+        // Reproducir sonido de inicio de juego
+        audioManager.playGameStart()
+        
+        // Iniciar música de fondo
+        audioManager.startBackgroundMusic()
+        
         reiniciarEstadoJuego()
         animarReinicio()
         inicializarCartasDelJuego()
@@ -310,6 +331,9 @@ class MainActivity : AppCompatActivity() {
     private fun inicializarCartasDelJuego() {
         // Limpiar todas las listas primero
         limpiarTodasLasCartas()
+        
+        // Reproducir sonido de barajado
+        audioManager.playShuffle()
         
         // Generar baraja completa mezclada
         barajaCompleta = GeneradorBaraja.generarBarajaMezclada()
@@ -431,6 +455,9 @@ class MainActivity : AppCompatActivity() {
         adapter: CartasAdapter,
         recyclerView: androidx.recyclerview.widget.RecyclerView
     ) {
+        // Reproducir sonido de colocación de carta
+        audioManager.playCardPlace()
+        
         // Remover la carta de la pista
         pista.remove(carta)
         
@@ -470,6 +497,9 @@ class MainActivity : AppCompatActivity() {
      * Muestra el mensaje de victoria con estadísticas detalladas del juego
      */
     private fun mostrarMensajeGanador(ganador: String) {
+        // Reproducir sonido de victoria
+        audioManager.playVictory()
+        
         // Animación de celebración
         animarCelebracion()
         
@@ -526,7 +556,7 @@ class MainActivity : AppCompatActivity() {
             ContextCompat.getColor(this, R.color.verde_mesa)
         )
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(
-            ContextCompat.getColor(this, R.color.azul_cartas)
+            ContextCompat.getColor(this, R.color.negro_cartas)
         )
         dialog.getButton(AlertDialog.BUTTON_NEUTRAL)?.setTextColor(
             ContextCompat.getColor(this, R.color.rojo_cartas)
@@ -600,30 +630,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Proporciona feedback háptico y visual para los botones
+     * Proporciona feedback háptico, visual y auditivo para los botones
      */
     private fun proporcionarFeedbackBoton(button: com.google.android.material.button.MaterialButton) {
-        // Feedback háptico
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE))
-        } else {
-            @Suppress("DEPRECATION")
-            vibrator.vibrate(50)
+        // Feedback auditivo
+        audioManager.playButtonClick()
+        
+        // Feedback háptico (solo si el vibrador está disponible)
+        vibrator?.let {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                it.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE))
+            } else {
+                @Suppress("DEPRECATION")
+                it.vibrate(50)
+            }
         }
         
-        // Feedback visual - animación de escala
-        val scaleDown = ObjectAnimator.ofFloat(button, "scaleX", 1.0f, 0.95f)
-        val scaleDownY = ObjectAnimator.ofFloat(button, "scaleY", 1.0f, 0.95f)
-        val scaleUp = ObjectAnimator.ofFloat(button, "scaleX", 0.95f, 1.0f)
-        val scaleUpY = ObjectAnimator.ofFloat(button, "scaleY", 0.95f, 1.0f)
+        // Feedback visual optimizado - animación de escala más rápida
+        val scaleDown = ObjectAnimator.ofFloat(button, "scaleX", 1.0f, 0.97f)
+        val scaleDownY = ObjectAnimator.ofFloat(button, "scaleY", 1.0f, 0.97f)
+        val scaleUp = ObjectAnimator.ofFloat(button, "scaleX", 0.97f, 1.0f)
+        val scaleUpY = ObjectAnimator.ofFloat(button, "scaleY", 0.97f, 1.0f)
         
         val animatorSet = AnimatorSet()
         animatorSet.playTogether(scaleDown, scaleDownY)
-        animatorSet.duration = 100
+        animatorSet.duration = 50 // Reducido para mejor rendimiento
         
         val animatorSetUp = AnimatorSet()
         animatorSetUp.playTogether(scaleUp, scaleUpY)
-        animatorSetUp.duration = 100
+        animatorSetUp.duration = 50 // Reducido para mejor rendimiento
         
         animatorSet.addListener(object : android.animation.AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: android.animation.Animator) {
@@ -641,6 +676,8 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onDestroy() {
         super.onDestroy()
+        // Liberar recursos de audio
+        audioManager.release()
         // ViewBinding se limpia automáticamente
     }
     
@@ -711,20 +748,34 @@ class MainActivity : AppCompatActivity() {
         animatorSet.interpolator = OvershootInterpolator(1.5f)
         
         // Vibración de celebración si está disponible
-        if (::vibrator.isInitialized) {
+        vibrator?.let {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val vibracionCelebracion = VibrationEffect.createWaveform(
                     longArrayOf(0, 100, 50, 100, 50, 200),
                     intArrayOf(0, 255, 0, 255, 0, 255),
                     -1
                 )
-                vibrator.vibrate(vibracionCelebracion)
+                it.vibrate(vibracionCelebracion)
             } else {
                 @Suppress("DEPRECATION")
-                vibrator.vibrate(longArrayOf(0, 100, 50, 100, 50, 200), -1)
+                it.vibrate(longArrayOf(0, 100, 50, 100, 50, 200), -1)
             }
         }
         
         animatorSet.start()
     }
+    
+    /**
+      * Configura el modo pantalla completa inmersivo
+      */
+     private fun configurarPantallaCompleta() {
+         WindowCompat.setDecorFitsSystemWindows(window, false)
+         
+         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+         // Ocultar barras del sistema
+         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+         
+         // Configurar comportamiento inmersivo
+         windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+     }
 }

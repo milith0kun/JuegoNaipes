@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Tema simplificado para API 31+ que hereda del tema principal -->
+    <style name="Theme.JuegoCarreraNaipes" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Solo configuraciones específicas para Android 12+ -->
+        
+        <!-- Splash Screen API (Android 12+) -->
+        <item name="android:windowSplashScreenBackground">@color/verde_mesa</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="android:windowSplashScreenAnimationDuration">1000</item>
+    </style>
+</resources>

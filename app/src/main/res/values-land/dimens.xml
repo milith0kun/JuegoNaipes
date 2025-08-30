@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dimensiones específicas para orientación horizontal -->
+    <!-- Botones más estrechos en landscape para mejor distribución -->
+    <dimen name="button_height">32dp</dimen>
+    <dimen name="button_margin">4dp</dimen>
+    <dimen name="button_container_padding">4dp</dimen>
+</resources>

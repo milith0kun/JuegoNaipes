@@ -137,9 +137,10 @@ class CartasAdapter(
 
     /**
      * Actualiza la lista de cartas de manera eficiente
+     * Optimizado para evitar copias innecesarias de memoria
      */
     fun actualizarCartas(nuevasCartas: List<Carta>) {
-        submitList(nuevasCartas.toList()) // Crear nueva lista para trigger DiffUtil
+        submitList(ArrayList(nuevasCartas)) // Crear nueva lista optimizada para trigger DiffUtil
     }
 
     /**

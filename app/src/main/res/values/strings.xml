@@ -13,7 +13,7 @@
 
     <string name="msg_ganador">EL GANADOR SON LAS CARTAS: </string>
 
-    <string name="msg_btn_siguiente">siguiente</string>
+    <string name="msg_btn_siguiente">Siguiente</string>
     <string name="msg_btn_juego_nuevo">Juego nuevo</string>
     <string name="msg_btn_instrucciones">Como se juega</string>
     
@@ -45,4 +45,9 @@
     <!-- Strings para estados de la aplicación -->
     <string name="procesando_carta">Procesando...</string>
     <string name="movimientos_formato">Movimientos: %1$d</string>
+    
+    <!-- Strings para botones optimizados -->
+    <string name="siguiente">Siguiente</string>
+    <string name="juego_nuevo">Nuevo</string>
+    <string name="info">Info</string>
 </resources>

@@ -9,25 +9,35 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- Colores del tema del juego -->
+    <!-- Colores del tema del juego - Paleta mejorada basada en la portada -->
     <color name="verde_mesa">#1B5E20</color>
-    <color name="verde_mesa_claro">#4CAF50</color>
+    <color name="verde_mesa_claro">#388E3C</color> <!-- Verde más elegante y menos saturado -->
     <color name="verde_mesa_oscuro">#0D3F0F</color>
+    <color name="verde_mesa_medio">#2E7D32</color> <!-- Nuevo tono intermedio -->
     
-    <!-- Colores de las cartas -->
-    <color name="rojo_cartas">#D32F2F</color>
-    <color name="negro_cartas">#212121</color>
-    <color name="azul_cartas">#1976D2</color>
-    <color name="azul_cartas_accesible">#0D47A1</color> <!-- Color con mejor contraste para accesibilidad -->
+    <!-- Colores dorados del logo - Paleta premium -->
+    <color name="dorado_elegante">#D4AF37</color> <!-- Dorado del borde del logo -->
+    <color name="dorado_brillante">#FFD700</color> <!-- Dorado del anillo interior -->
+    <color name="dorado_claro">#F9E79F</color> <!-- Dorado suave para fondos -->
+    <color name="dorado_oscuro">#B8860B</color> <!-- Dorado oscuro para contraste -->
     
-    <!-- Colores de superficie -->
-    <color name="superficie_clara">#FAFAFA</color>
-    <color name="superficie_media">#F5F5F5</color>
-    <color name="superficie_oscura">#EEEEEE</color>
+    <!-- Colores rojos del logo - Corazones y diamantes -->
+    <color name="rojo_cartas">#DC143C</color> <!-- Rojo principal del logo -->
+    <color name="rojo_cartas_oscuro">#B71C1C</color> <!-- Rojo oscuro del logo -->
+    <color name="rojo_cartas_claro">#F8BBD9</color> <!-- Rojo suave para fondos -->
     
-    <!-- Colores de acento -->
-    <color name="dorado">#FFB300</color>
-    <color name="plata">#9E9E9E</color>
+    <!-- Colores de cartas negras -->
+    <color name="negro_cartas">#2C2C2C</color> <!-- Negro más suave del logo -->
+    <color name="negro_cartas_oscuro">#1A1A1A</color> <!-- Negro intenso -->
+    
+    <!-- Colores de superficie premium -->
+    <color name="superficie_premium">#F8F8F8</color> <!-- Blanco cremoso del logo -->
+    <color name="superficie_dorada">#FFF8DC</color> <!-- Superficie con toque dorado -->
+    <color name="superficie_verde_suave">#E8F5E8</color> <!-- Verde muy claro -->
+    
+    <!-- Colores de acento actualizados -->
+    <color name="dorado">#D4AF37</color> <!-- Mantenido para compatibilidad -->
+    <color name="plata">#C0C0C0</color> <!-- Plata más brillante -->
     
     <!-- Estados de botones -->
     <color name="boton_presionado">#388E3C</color>

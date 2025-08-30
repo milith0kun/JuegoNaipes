@@ -3,16 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_carta"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="@dimen/carta_ancho"
+    android:layout_height="@dimen/carta_alto"
     android:background="@drawable/card_background"
-    android:padding="2dp">
+    android:padding="@dimen/carta_padding"
+    android:layout_margin="@dimen/carta_margin">
 
     <ImageView
         android:id="@+id/ivCarta"
-        android:layout_width="32dp"
-        android:layout_height="46dp"
-        android:scaleType="centerCrop"
+        android:layout_width="@dimen/carta_ancho_imageview"
+        android:layout_height="@dimen/carta_alto_imageview"
+        android:layout_gravity="center"
+        android:paddingBottom="2dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
         android:src="@drawable/red_back" />
 
 </FrameLayout>

@@ -61,14 +61,10 @@
                     android:id="@+id/tvCartaActual"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
                     android:gravity="start"
                     android:text="Esperando carta..."
                     android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:maxLines="1"
-                    android:ellipsize="end"
+                    android:textSize="12sp"
                     android:contentDescription="Información de la carta actual" />
 
             </LinearLayout>
@@ -77,18 +73,42 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Área de juego con las cartas -->
+    <!-- Área de juego con las 4 pistas -->
     <LinearLayout
-        android:id="@+id/gameArea"
+        android:id="@+id/gameAreaLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
         android:padding="@dimen/game_area_padding"
-        android:weightSum="5"
+        app:layout_constraintTop_toBottomOf="@id/headerCard"
         app:layout_constraintBottom_toTopOf="@id/controlsCard"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headerCard">
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Corazones -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            app:cardBackgroundColor="@color/superficie_dorada"
+            app:cardCornerRadius="@dimen/carta_corner_radius"
+            app:cardElevation="@dimen/carta_elevation"
+            app:strokeColor="@color/dorado_elegante"
+            app:strokeWidth="1dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCorazones"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fadeScrollbars="true"
+                android:orientation="horizontal"
+                android:padding="@dimen/recyclerview_padding"
+                android:scrollbars="horizontal"
+                android:contentDescription="@string/corazones_description" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Tréboles -->
         <com.google.android.material.card.MaterialCardView
@@ -112,31 +132,6 @@
                 android:padding="@dimen/recyclerview_padding"
                 android:scrollbars="horizontal"
                 android:contentDescription="@string/treboles_description" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Corazones -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="1dp"
-            android:layout_weight="1"
-            app:cardBackgroundColor="@color/superficie_dorada"
-             app:cardCornerRadius="@dimen/carta_corner_radius"
-             app:cardElevation="@dimen/carta_elevation"
-             app:strokeColor="@color/dorado_elegante"
-             app:strokeWidth="1dp">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvCorazones"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:fadeScrollbars="true"
-                android:orientation="horizontal"
-                android:padding="@dimen/recyclerview_padding"
-                android:scrollbars="horizontal"
-                android:contentDescription="@string/corazones_description" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -190,7 +185,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Pista -->
+        <!-- Pista central para mostrar cartas jugadas -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -222,7 +217,7 @@
         android:id="@+id/controlsCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/superficie_verde_suave"
+        app:cardBackgroundColor="@color/superficie_premium"
         app:cardCornerRadius="0dp"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -231,40 +226,41 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="32dp"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="1dp">
+            android:padding="@dimen/button_container_padding">
 
+            <!-- Botones más estrechos en landscape -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSiguiente"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginEnd="@dimen/button_margin"
-                android:layout_weight="1"
+                android:layout_weight="0.8"
                 android:gravity="center"
                 android:text="@string/siguiente"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnJuegoNuevo"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginHorizontal="@dimen/button_margin"
-                android:layout_weight="1"
+                android:layout_weight="0.8"
                 android:gravity="center"
                 android:text="@string/juego_nuevo"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnInfo"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginStart="@dimen/button_margin"
-                android:layout_weight="1"
+                android:layout_weight="0.8"
                 android:gravity="center"
                 android:text="@string/info"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
 
         </LinearLayout>
 
