@@ -2,65 +2,67 @@ package com.example.juegocarreranaipes
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import com.bumptech.glide.Glide
+import android.animation.ObjectAnimator
+import android.animation.AnimatorSet
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.OvershootInterpolator
+import androidx.dynamicanimation.animation.SpringAnimation
+import androidx.dynamicanimation.animation.SpringForce
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewPropertyAnimatorCompat
 import com.example.juegocarreranaipes.databinding.ActivityMainBinding
-import java.util.*
-import kotlin.collections.ArrayList
+import kotlin.random.Random
 
-class MainActivity : AppCompatActivity(), CartasAdapter.OnItemClicked {
+class MainActivity : AppCompatActivity() {
 
+    // ViewBinding para acceso eficiente a las vistas
     private lateinit var binding: ActivityMainBinding
 
-    val treboles = arrayListOf<String>()
-    val corazones = arrayListOf<String>()
-    val corazonesNegros = arrayListOf<String>()
-    val diamantes = arrayListOf<String>()
-    var pista = arrayListOf("g", "r", "r", "r", "r", "r", "r", "r", "r", "r", "r", "r", "r", "g")
-    var numMovimientos = 0
+    // Variables para las cartas de cada palo (usando constantes para mejor rendimiento)
+    private val treboles = arrayListOf<String>()
+    private val corazones = arrayListOf<String>()
+    private val corazonesNegros = arrayListOf<String>()
+    private val diamantes = arrayListOf<String>()
+    private val pista = arrayListOf<String>()
 
-    private lateinit var cartasAdapter: CartasAdapter
-    private lateinit var cartasPistaAdapter: CartasPistaAdapter
+    // Variables para el manejo de movimientos
+    private var movimientos = 0
+    private var juegoTerminado = false
+
+    // Variables para los adaptadores
+    private lateinit var adapterTreboles: CartasAdapter
+    private lateinit var adapterCorazones: CartasAdapter
+    private lateinit var adapterCorazonesNegros: CartasAdapter
+    private lateinit var adapterDiamantes: CartasAdapter
+    private lateinit var adapterPista: CartasPistaAdapter
+
+    // Constantes para los palos
+    companion object {
+        private const val PALO_TREBOLES = 1
+        private const val PALO_CORAZONES = 2
+        private const val PALO_PICAS = 3
+        private const val PALO_DIAMANTES = 4
+        private const val CARTAS_POR_PALO = 13
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar!!.hide()
 
         iniciarJuego()
+        configurarEventos()
+    }
 
+    /**
+     * Configura los eventos de los botones de manera más limpia
+     */
+    private fun configurarEventos() {
         binding.btnSiguiente.setOnClickListener {
-            var num = obtenerCartaAleatoria()
-            numMovimientos++
-            when(num) {
-                1 -> {
-                    binding.cartasPozo.setImageResource(R.drawable.qc)
-                    treboles.add("ac")
-                    binding.tvMovimientos.text = "${resources.getString(R.string.msg_movimiento)} $numMovimientos ${resources.getString(R.string.msg_avance)} Treboles"
-                    setupRecyclerViewTreboles()
-                }
-                2 -> {
-                    binding.cartasPozo.setImageResource(R.drawable.qh)
-                    corazones.add("ah")
-                    binding.tvMovimientos.text = "${resources.getString(R.string.msg_movimiento)} $numMovimientos ${resources.getString(R.string.msg_avance)} Corazones"
-                    setupRecyclerViewCorazones()
-                }
-                3 -> {
-                    binding.cartasPozo.setImageResource(R.drawable.qs)
-                    corazonesNegros.add("as")
-                    binding.tvMovimientos.text = "${resources.getString(R.string.msg_movimiento)} $numMovimientos ${resources.getString(R.string.msg_avance)} Corazones Negros"
-                    setupRecyclerViewCorazonesNegros()
-                }
-                4 -> {
-                    binding.cartasPozo.setImageResource(R.drawable.qd)
-                    diamantes.add("ad")
-                    binding.tvMovimientos.text = "${resources.getString(R.string.msg_movimiento)} $numMovimientos ${resources.getString(R.string.msg_avance)} Diamantes"
-                    setupRecyclerViewDiamantes()
-                }
+            if (!juegoTerminado) {
+                procesarSiguienteCarta()
             }
         }
 
@@ -69,103 +71,291 @@ class MainActivity : AppCompatActivity(), CartasAdapter.OnItemClicked {
         }
 
         binding.btnInfo.setOnClickListener {
-            instrucciones()
+            mostrarInstrucciones()
         }
     }
 
+    /**
+     * Procesa la siguiente carta del juego con lógica optimizada
+     */
+    private fun procesarSiguienteCarta() {
+        val carta = obtenerCartaAleatoria()
+        movimientos++
+        actualizarContadorMovimientos()
+
+        when (carta) {
+            PALO_TREBOLES -> agregarCartaAPalo(treboles, adapterTreboles)
+            PALO_CORAZONES -> agregarCartaAPalo(corazones, adapterCorazones)
+            PALO_PICAS -> agregarCartaAPalo(corazonesNegros, adapterCorazonesNegros)
+            PALO_DIAMANTES -> agregarCartaAPalo(diamantes, adapterDiamantes)
+        }
+    }
+
+    /**
+     * Agrega una carta al palo especificado y verifica si el juego terminó
+     */
+    private fun agregarCartaAPalo(palo: ArrayList<String>, adapter: CartasAdapter) {
+        palo.add("carta")
+        adapter.notifyItemInserted(palo.size - 1) // Notificación más eficiente
+        
+        // Animar la adición de carta
+        when (adapter) {
+            adapterTreboles -> animarCarta(binding.rvTreboles)
+            adapterCorazones -> animarCarta(binding.rvCorazones)
+            adapterCorazonesNegros -> animarCarta(binding.rvPicas)
+            adapterDiamantes -> animarCarta(binding.rvDiamantes)
+        }
+        
+        if (palo.size == CARTAS_POR_PALO) {
+            juegoTerminado = true
+            mostrarMensajeGanador()
+        }
+    }
+
+    /**
+     * Actualiza el contador de movimientos en la UI
+     */
+    private fun actualizarContadorMovimientos() {
+        binding.tvMovimientos.text = "Movimientos: $movimientos"
+        animarTexto(binding.tvMovimientos)
+    }
+
+    /**
+     * Inicializa el juego con estado limpio y configuración optimizada
+     */
     private fun iniciarJuego() {
-        binding.btnSiguiente.isEnabled = true
+        // Limpiar todas las listas de cartas
+        limpiarTodasLasCartas()
+        
+        // Reiniciar variables de estado
+        movimientos = 0
+        juegoTerminado = false
+        actualizarContadorMovimientos()
+        
+        // Animar reinicio
+        animarReinicio()
 
-        numMovimientos = 0
-        binding.tvMovimientos.text = "Movimiento: $numMovimientos"
+        // Inicializar las listas con una carta inicial para cada palo
+        inicializarCartasIniciales()
 
+        // Inicializar la pista con 24 cartas
+        repeat(24) { pista.add("carta") }
+
+        // Configurar todos los RecyclerViews
+        configurarRecyclerViews()
+    }
+
+    /**
+     * Limpia todas las listas de cartas de manera eficiente
+     */
+    private fun limpiarTodasLasCartas() {
         treboles.clear()
         corazones.clear()
         corazonesNegros.clear()
         diamantes.clear()
-        
-        treboles.add("ac")
-        corazones.add("ah")
-        corazonesNegros.add("as")
-        diamantes.add("ad")
-
-        setupRecyclerViewTreboles()
-        setupRecyclerViewCorazones()
-        setupRecyclerViewCorazonesNegros()
-        setupRecyclerViewDiamantes()
-        setupRecyclerViewPista()
+        pista.clear()
     }
 
-    private fun obtenerCartaAleatoria(): Int {
-        return (1..4).random()
-    }
-
-    private fun setupRecyclerViewTreboles() {
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.cartasTreboles.layoutManager = layoutManager
-        cartasAdapter = CartasAdapter(this, treboles, "c", this)
-        binding.cartasTreboles.adapter = cartasAdapter
-    }
-
-    private fun setupRecyclerViewCorazones() {
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.cartasCorazones.layoutManager = layoutManager
-        cartasAdapter = CartasAdapter(this, corazones, "h", this)
-        binding.cartasCorazones.adapter = cartasAdapter
-    }
-
-    private fun setupRecyclerViewCorazonesNegros() {
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.cartasCorazonesNegros.layoutManager = layoutManager
-        cartasAdapter = CartasAdapter(this, corazonesNegros, "s", this)
-        binding.cartasCorazonesNegros.adapter = cartasAdapter
-    }
-
-    private fun setupRecyclerViewDiamantes() {
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.cartasDiamantes.layoutManager = layoutManager
-        cartasAdapter = CartasAdapter(this, diamantes, "d", this)
-        binding.cartasDiamantes.adapter = cartasAdapter
-    }
-
-    private fun setupRecyclerViewPista() {
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.cartasPista.layoutManager = layoutManager
-        cartasPistaAdapter = CartasPistaAdapter(this, pista)
-        binding.cartasPista.adapter = cartasPistaAdapter
-    }
-
-    override fun mensajeGanador(tipo: String) {
-        var builder = AlertDialog.Builder(this)
-        builder.setTitle("GANADOR")
-
-        var carta = ""
-        when(tipo) {
-            "c" -> carta = "TREBOLES"
-            "h" -> carta = "CORAZONES"
-            "s" -> carta = "CORAZONES NEGROS"
-            "d" -> carta = "DIAMANTES"
+    /**
+     * Inicializa cada palo con cartas iniciales para mejor visualización
+     */
+    private fun inicializarCartasIniciales() {
+        // Agregar 3 cartas iniciales a cada palo para mejor visualización
+        repeat(3) {
+            treboles.add("carta")
+            corazones.add("carta")
+            corazonesNegros.add("carta")
+            diamantes.add("carta")
         }
-
-        builder.setMessage("${resources.getString(R.string.msg_ganador)} $carta")
-
-        builder.create()
-        builder.setCancelable(true)
-        builder.show()
-
-        binding.btnSiguiente.isEnabled = false
-
-        binding.tvMovimientos.text = "Movimiento: $numMovimientos, Ganador: $carta"
     }
 
-    private fun instrucciones() {
-        var builder = AlertDialog.Builder(this)
-        builder.setTitle("INSTRUCCIONES")
+    /**
+     * Configura todos los RecyclerViews de manera centralizada
+     */
+    private fun configurarRecyclerViews() {
+        configurarRecyclerViewTreboles()
+        configurarRecyclerViewCorazones()
+        configurarRecyclerViewCorazonesNegros()
+        configurarRecyclerViewDiamantes()
+        configurarRecyclerViewPista()
+    }
 
-        builder.setMessage(resources.getString(R.string.instrucciones))
+    /**
+     * Genera una carta aleatoria entre los 4 palos disponibles
+     */
+    private fun obtenerCartaAleatoria(): Int {
+        return Random.nextInt(PALO_TREBOLES, PALO_DIAMANTES + 1)
+    }
 
-        builder.create()
-        builder.setCancelable(true)
+    /**
+     * Configura el RecyclerView para las cartas de tréboles
+     */
+    private fun configurarRecyclerViewTreboles() {
+        adapterTreboles = CartasAdapter(this, treboles, PALO_TREBOLES)
+        binding.rvTreboles.apply {
+            adapter = adapterTreboles
+            layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true) // Optimización para mejor rendimiento
+            // Aplicar decoración personalizada para espaciado optimizado
+            addItemDecoration(CartaItemDecoration(resources.getDimensionPixelSize(R.dimen.carta_margin)))
+        }
+    }
+
+    /**
+     * Configura el RecyclerView para las cartas de corazones
+     */
+    private fun configurarRecyclerViewCorazones() {
+        adapterCorazones = CartasAdapter(this, corazones, PALO_CORAZONES)
+        binding.rvCorazones.apply {
+            adapter = adapterCorazones
+            layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            // Aplicar decoración personalizada para espaciado optimizado
+            addItemDecoration(CartaItemDecoration(resources.getDimensionPixelSize(R.dimen.carta_margin)))
+        }
+    }
+
+    /**
+     * Configura el RecyclerView para las cartas de picas (corazones negros)
+     */
+    private fun configurarRecyclerViewCorazonesNegros() {
+        adapterCorazonesNegros = CartasAdapter(this, corazonesNegros, PALO_PICAS)
+        binding.rvPicas.apply {
+            adapter = adapterCorazonesNegros
+            layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            // Aplicar decoración personalizada para espaciado optimizado
+            addItemDecoration(CartaItemDecoration(resources.getDimensionPixelSize(R.dimen.carta_margin)))
+        }
+    }
+
+    /**
+     * Configura el RecyclerView para las cartas de diamantes
+     */
+    private fun configurarRecyclerViewDiamantes() {
+        adapterDiamantes = CartasAdapter(this, diamantes, PALO_DIAMANTES)
+        binding.rvDiamantes.apply {
+            adapter = adapterDiamantes
+            layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            // Aplicar decoración personalizada para espaciado optimizado
+            addItemDecoration(CartaItemDecoration(resources.getDimensionPixelSize(R.dimen.carta_margin)))
+        }
+    }
+
+    /**
+     * Configura el RecyclerView para la pista de cartas
+     */
+    private fun configurarRecyclerViewPista() {
+        adapterPista = CartasPistaAdapter(this, pista)
+        binding.rvPista.apply {
+            adapter = adapterPista
+            layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            // Aplicar decoración personalizada para espaciado optimizado
+            addItemDecoration(CartaItemDecoration(resources.getDimensionPixelSize(R.dimen.carta_margin)))
+        }
+    }
+
+    /**
+     * Muestra el mensaje de victoria con estadísticas del juego
+     */
+    private fun mostrarMensajeGanador() {
+        // Animación de celebración
+        animarCelebracion()
+        
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("🎉 ¡Felicidades! 🎉")
+        builder.setMessage("Has completado el juego en $movimientos movimientos\n\n¡Excelente trabajo!\n\n¿Quieres jugar otra vez?")
+        builder.setPositiveButton("🎮 Juego Nuevo") { _, _ ->
+            iniciarJuego()
+        }
+        builder.setNegativeButton("🚪 Salir") { _, _ ->
+            finish()
+        }
+        builder.setCancelable(false) // Evita cerrar accidentalmente
         builder.show()
+    }
+
+    /**
+     * Muestra las instrucciones del juego de manera más clara
+     */
+    private fun mostrarInstrucciones() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("📋 Instrucciones del Juego")
+        builder.setMessage(
+            "🎯 OBJETIVO:\n" +
+            "Completa cualquiera de las 4 filas de cartas (una por cada palo).\n\n" +
+            "🎮 CÓMO JUGAR:\n" +
+            "• Presiona 'Siguiente' para agregar una carta aleatoria\n" +
+            "• Las cartas se distribuyen entre los 4 palos\n" +
+            "• Ganas cuando un palo llegue a 13 cartas\n\n" +
+            "🏆 ¡Intenta completar el juego en el menor número de movimientos!"
+        )
+        builder.setPositiveButton("Entendido") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.show()
+    }
+
+    /**
+     * Libera recursos cuando la actividad se destruye
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        // ViewBinding se limpia automáticamente
+    }
+    
+    // Funciones de animación
+    private fun animarCarta(recyclerView: androidx.recyclerview.widget.RecyclerView) {
+        val scaleX = ObjectAnimator.ofFloat(recyclerView, "scaleX", 1.0f, 1.1f, 1.0f)
+        val scaleY = ObjectAnimator.ofFloat(recyclerView, "scaleY", 1.0f, 1.1f, 1.0f)
+        
+        val animatorSet = AnimatorSet()
+        animatorSet.playTogether(scaleX, scaleY)
+        animatorSet.duration = 300
+        animatorSet.interpolator = OvershootInterpolator()
+        animatorSet.start()
+    }
+    
+    private fun animarTexto(textView: android.widget.TextView) {
+        val fadeOut = ObjectAnimator.ofFloat(textView, "alpha", 1.0f, 0.3f)
+        val fadeIn = ObjectAnimator.ofFloat(textView, "alpha", 0.3f, 1.0f)
+        val scale = ObjectAnimator.ofFloat(textView, "scaleX", 1.0f, 1.2f, 1.0f)
+        
+        val animatorSet = AnimatorSet()
+        animatorSet.playSequentially(fadeOut, fadeIn)
+        animatorSet.playTogether(fadeIn, scale)
+        animatorSet.duration = 200
+        animatorSet.start()
+    }
+    
+    private fun animarReinicio() {
+        // Animación de fade out y fade in para toda el área de juego
+        val fadeOut = ObjectAnimator.ofFloat(binding.root, "alpha", 1.0f, 0.0f)
+        val fadeIn = ObjectAnimator.ofFloat(binding.root, "alpha", 0.0f, 1.0f)
+        
+        fadeOut.duration = 200
+        fadeIn.duration = 300
+        
+        fadeOut.addListener(object : android.animation.AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: android.animation.Animator) {
+                fadeIn.start()
+            }
+        })
+        
+        fadeOut.start()
+    }
+    
+    private fun animarCelebracion() {
+        // Animación de celebración para toda la pantalla
+        val pulseX = ObjectAnimator.ofFloat(binding.root, "scaleX", 1.0f, 1.05f, 1.0f)
+        val pulseY = ObjectAnimator.ofFloat(binding.root, "scaleY", 1.0f, 1.05f, 1.0f)
+        
+        val animatorSet = AnimatorSet()
+        animatorSet.playTogether(pulseX, pulseY)
+        animatorSet.duration = 600
+        animatorSet.interpolator = OvershootInterpolator()
+        animatorSet.start()
     }
 }

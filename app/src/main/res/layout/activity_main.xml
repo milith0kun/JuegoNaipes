@@ -1,135 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:weightSum="7"
+    android:id="@+id/main_constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/verde_mesa"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <!-- Header con información del juego -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/headerCard"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/cartasPozo"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/red_back"
-            android:scaleType="centerInside"/>
-
-        <TextView
-            android:id="@+id/tvMovimientos"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textSize="24sp"
-            android:textColor="@color/white"
-            android:gravity="center" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cartasTreboles"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/item_rv_cartas"/>
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/cartasPozo"
+                android:layout_width="32dp"
+                android:layout_height="46dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="@string/content_desc_cartas_pozo"
+                android:scaleType="centerCrop"
+                android:src="@drawable/red_back" />
 
+            <TextView
+                android:id="@+id/tvMovimientos"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:gravity="center"
+                android:text="@string/text_movimientos_inicial"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Área de juego con las cartas -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:id="@+id/gameArea"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="@dimen/game_area_padding"
+        android:weightSum="5"
+        app:layout_constraintBottom_toTopOf="@id/controlsCard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerCard">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cartasCorazones"
+        <!-- Tréboles -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/item_rv_cartas"/>
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            app:cardCornerRadius="@dimen/carta_corner_radius"
+            app:cardElevation="@dimen/carta_elevation"
+            app:strokeColor="@color/verde_mesa"
+            app:strokeWidth="1dp">
 
-    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTreboles"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fadeScrollbars="true"
+                android:orientation="horizontal"
+                android:padding="@dimen/recyclerview_padding"
+                android:scrollbars="horizontal" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cartasCorazonesNegros"
+        <!-- Corazones -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/item_rv_cartas"/>
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            app:cardCornerRadius="@dimen/carta_corner_radius"
+            app:cardElevation="@dimen/carta_elevation"
+            app:strokeColor="@color/verde_mesa"
+            app:strokeWidth="1dp">
 
-    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCorazones"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fadeScrollbars="true"
+                android:orientation="horizontal"
+                android:padding="@dimen/recyclerview_padding"
+                android:scrollbars="horizontal" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cartasDiamantes"
+        <!-- Diamantes -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/item_rv_cartas"/>
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            app:cardCornerRadius="@dimen/carta_corner_radius"
+            app:cardElevation="@dimen/carta_elevation"
+            app:strokeColor="@color/verde_mesa"
+            app:strokeWidth="1dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvDiamantes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fadeScrollbars="true"
+                android:orientation="horizontal"
+                android:padding="@dimen/recyclerview_padding"
+                android:scrollbars="horizontal" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Picas -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            app:cardCornerRadius="@dimen/carta_corner_radius"
+            app:cardElevation="@dimen/carta_elevation"
+            app:strokeColor="@color/verde_mesa"
+            app:strokeWidth="1dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPicas"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fadeScrollbars="true"
+                android:orientation="horizontal"
+                android:padding="@dimen/recyclerview_padding"
+                android:scrollbars="horizontal" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Pista -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            app:cardCornerRadius="@dimen/carta_corner_radius"
+            app:cardElevation="@dimen/carta_elevation"
+            app:strokeColor="@color/verde_mesa"
+            app:strokeWidth="1dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPista"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fadeScrollbars="true"
+                android:orientation="horizontal"
+                android:padding="@dimen/recyclerview_padding"
+                android:scrollbars="horizontal" />
+
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <!-- Controles del juego -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/controlsCard"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cartasPista"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/item_rv_cartas"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="4dp">
 
-    </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSiguiente"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginEnd="@dimen/button_margin"
+                android:layout_weight="0.8"
+                android:backgroundTint="@color/verde_mesa"
+                android:text="@string/msg_btn_siguiente"
+                android:textColor="@color/white"
+                app:icon="@android:drawable/ic_media_play" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnJuegoNuevo"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginHorizontal="@dimen/button_margin"
+                android:layout_weight="0.8"
+                android:text="@string/msg_btn_juego_nuevo"
+                android:textColor="@color/verde_mesa"
+                app:icon="@android:drawable/ic_menu_revert"
+                app:strokeColor="@color/verde_mesa" />
 
-        <Button
-            android:id="@+id/btnSiguiente"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:text="@string/msg_btn_siguiente"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnInfo"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginStart="@dimen/button_margin"
+                android:layout_weight="0.8"
+                android:text="@string/msg_btn_instrucciones"
+                android:textColor="@color/azul_cartas_accesible"
+                app:icon="@android:drawable/ic_menu_info_details"
+                app:strokeColor="@color/azul_cartas_accesible" />
 
-        <Button
-            android:id="@+id/btnJuegoNuevo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:text="@string/msg_btn_juego_nuevo"/>
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/btnInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:text="@string/msg_btn_instrucciones"/>
+    </com.google.android.material.card.MaterialCardView>
 
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

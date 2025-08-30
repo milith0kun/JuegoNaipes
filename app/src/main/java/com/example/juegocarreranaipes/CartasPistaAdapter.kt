@@ -7,32 +7,51 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
+/**
+ * Adaptador optimizado para mostrar la pista de cartas
+ * Implementa mejores prácticas de rendimiento
+ */
 class CartasPistaAdapter(
-    val context: Context,
-    val lista: ArrayList<String>
+    private val context: Context,
+    private val lista: ArrayList<String>
 ): RecyclerView.Adapter<CartasPistaAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var vista = LayoutInflater.from(parent.context).inflate(R.layout.item_rv_cartas, parent, false)
+        val vista = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_rv_cartas, parent, false)
         return ViewHolder(vista)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        if (position == 0 || position == lista.size-1) {
-            Glide.with(context).load(context.resources.getDrawable(R.drawable.grey_back)).centerInside().into(holder.carta)
+        // Mostrar cartas grises en los extremos, rojas en el medio
+        val drawableRes = if (position == 0 || position == lista.size - 1) {
+            R.drawable.grey_back
         } else {
-            Glide.with(context).load(context.resources.getDrawable(R.drawable.red_back)).centerInside().into(holder.carta)
+            R.drawable.red_back
         }
-
+        
+        cargarImagenOptimizada(holder.carta, drawableRes)
     }
 
-    override fun getItemCount(): Int {
-        return lista.size
+    /**
+     * Carga imágenes de manera optimizada usando Glide
+     */
+    private fun cargarImagenOptimizada(imageView: ImageView, drawableRes: Int) {
+        Glide.with(context)
+            .load(drawableRes)
+            .centerCrop()
+            .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache para mejor rendimiento
+            .into(imageView)
     }
 
+    override fun getItemCount(): Int = lista.size
+
+    /**
+     * ViewHolder optimizado con lazy initialization
+     */
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        var carta = itemView.findViewById(R.id.ivCarta) as ImageView
+        val carta: ImageView by lazy { itemView.findViewById(R.id.ivCarta) }
     }
 }

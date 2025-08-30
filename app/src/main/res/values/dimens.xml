@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dimensiones de las cartas (optimizadas para orientación horizontal) -->
+    <dimen name="carta_ancho">60dp</dimen> <!-- Equilibrio óptimo entre tamaño y distribución -->
+    <dimen name="carta_alto">80dp</dimen> <!-- Altura fija para referencia, pero se usa match_parent en layout -->
+    
+    <!-- Espaciado y márgenes -->
+    <dimen name="carta_margin">0dp</dimen> <!-- Margen mínimo entre cartas para distribución compacta -->
+    <dimen name="carta_padding">0dp</dimen> <!-- Padding mínimo interno para mejor aprovechamiento del espacio -->
+    <dimen name="carta_corner_radius">6dp</dimen>
+    <dimen name="carta_elevation">2dp</dimen>
+    
+    <!-- Dimensiones del área de juego -->
+    <dimen name="game_area_padding">0dp</dimen>
+    <dimen name="recyclerview_padding">4dp</dimen>
+    
+    <!-- Dimensiones de los controles -->
+    <dimen name="button_height">36dp</dimen> <!-- Tamaño mínimo para accesibilidad -->
+    <dimen name="button_margin">6dp</dimen>
+    <dimen name="button_container_padding">8dp</dimen>
+</resources>

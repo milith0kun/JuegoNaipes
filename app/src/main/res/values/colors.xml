@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Colores originales mantenidos para compatibilidad -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -8,5 +9,27 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="verde_mesa">#2F4F30</color>
+    <!-- Colores del tema del juego -->
+    <color name="verde_mesa">#1B5E20</color>
+    <color name="verde_mesa_claro">#4CAF50</color>
+    <color name="verde_mesa_oscuro">#0D3F0F</color>
+    
+    <!-- Colores de las cartas -->
+    <color name="rojo_cartas">#D32F2F</color>
+    <color name="negro_cartas">#212121</color>
+    <color name="azul_cartas">#1976D2</color>
+    <color name="azul_cartas_accesible">#0D47A1</color> <!-- Color con mejor contraste para accesibilidad -->
+    
+    <!-- Colores de superficie -->
+    <color name="superficie_clara">#FAFAFA</color>
+    <color name="superficie_media">#F5F5F5</color>
+    <color name="superficie_oscura">#EEEEEE</color>
+    
+    <!-- Colores de acento -->
+    <color name="dorado">#FFB300</color>
+    <color name="plata">#9E9E9E</color>
+    
+    <!-- Estados de botones -->
+    <color name="boton_presionado">#388E3C</color>
+    <color name="boton_deshabilitado">#BDBDBD</color>
 </resources>
